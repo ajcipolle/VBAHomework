@@ -1,0 +1,64 @@
+Sub InsertColumns()
+        Columns("I:I").Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
+        Range("I1").Value = "Ticker"
+        
+        Columns("J:J").Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
+        Range("J1").Value = "Yearly Change"
+        
+        Columns("K:K").Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
+        Range("K1").Value = "Percent Change"
+        
+        Columns("L:L").Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
+        Range("L1").Value = "Total Stock Volume"
+End Sub
+
+Sub loop_ticker()
+
+' create vairables for ticker_symbol, price_open, price_close, percent_change, total_volume,
+Dim ticker_symbol As String
+Dim price_open As Double
+Dim price_close As Double
+Dim percent_change As Double
+Dim total_volume As Long
+
+'set total volume to zero
+toal_volume = 0
+
+'last row counter found at excelanytime.com
+Dim lastRow As Long
+lastRow = ActiveSheet.Range("A" & Rows.Count).End(xlUp).Row
+'MsgBox lastRow
+
+'keep track of the lrow location of the summary table
+Dim Summary_Table_Row As Integer
+Summary_Table_Row = 2
+
+'initialize ticker symbol as empty string (is this necessary?)
+ticker_symbol = " "
+
+' create a for loop to read all rows of ticker symbol
+
+    For i = 2 To lastRow
+        'if the cell immediately following on the next row is the same ticker sumbol as before
+        
+       If Cells(i, A).Value <> Cells(i + 1, A).Value Then
+       'set the ticker symbol
+       ticker_symbol = Cells(i, 1).Value
+       'Store ticker symbol in the summary table
+       Range("I" & Summary_Table_Row).Value = ticker_symbol
+       
+      Else
+      
+        'MsgBox ticker_symbol
+        
+        End If
+        'advance one row down the summary table
+        Summary_Table_Row = Summary_Table_Row + 1
+        
+        'reset ticker symbol
+        ticker_symbol = " "
+    Next i
+    
+
+End Sub
+
